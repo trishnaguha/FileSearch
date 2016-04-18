@@ -1,8 +1,6 @@
 import os
-import glob
-import shutil
-import sys
 import re
+import logging
 from exceptions import ExtensionError
 
 class Base(object):
@@ -31,7 +29,7 @@ class WithExtensionUnderGivenDirectory(Base):
             else:
                 raise ExtensionError('Invalid Extension, Enter correct extension')
         except ExtensionError as err:
-            print("ExtensionError:", err.message)
+            logging.exception(err.message)
 
 
 class WithFileNameUnderGivenDirectory(Base):
@@ -58,4 +56,6 @@ class WithPatterUnderGivenDirectory(Base):
         self.dir = dir
 
     def withPattern(self):
-        
+       for file in os.listdir(self.dir):
+           if re.search(self.pattern, file):
+               print(file)
